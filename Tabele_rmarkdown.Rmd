@@ -4,14 +4,15 @@ title: Krótki przewodnik po tabelach generowanych w markdown przy pomocy funkcj
 author: "Zbyszek Marczewski"
 date: "Wtorek, 9 czerwca 2015 r."
 output:
-  pdf_document:
-    highlight: zenburn
+  html_document:
+    keep_md: yes
+    theme: united
     toc: yes
   md_document:
     toc: yes
     toc_depth: 2
-  html_document:
-    theme: united
+  pdf_document:
+    highlight: zenburn
     toc: yes
   word_document: null
 ---
