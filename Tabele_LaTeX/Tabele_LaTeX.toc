@@ -1,0 +1,6 @@
+\contentsline {section}{\numberline {1}Wst\IeC {\k e}p}{1}
+\contentsline {section}{\numberline {2}Klasyczne rozwi\IeC {\k a}zanie - ``xtable''}{2}
+\contentsline {section}{\numberline {3}Prostsze rozwi\IeC {\k a}zanie - ``kable''}{4}
+\contentsline {subsection}{\numberline {3.1}Zwyk\IeC {\l }e ``kable''}{4}
+\contentsline {subsection}{\numberline {3.2}Lepsze ``kable'' z u\IeC {\.z}yciem biblioteki \emph {longtable}}{6}
+\contentsline {subsection}{\numberline {3.3}Najlesze ``kable'' z u\IeC {\.z}yciem bibliotek \emph {longtable} i \emph {booktabs}}{8}

@@ -1,0 +1,721 @@
+\documentclass[a4paper, 10pt]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt} % ustawienia dokumentu
+\usepackage{polski} % język
+\usepackage[utf8]{inputenc} % język
+\setlength{\parindent}{0pt} % wciecie akapitu
+\usepackage[margin=1in]{geometry} % marginesy
+\linespread{1.3} % interlinia 1,5 
+\usepackage{longtable} % ustawienia dla tabel - bliblioteka longtable
+\usepackage{booktabs} % ustawienia dla tabel - bliblioteka booktabs
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\title{Generowanie tabele w LaTeX-u przy użyciu funkcji \emph{kable}}
+\date{9 czerwca 2015 r.}
+\author{ Zbyszek Marczewski}
+
+\maketitle
+
+\tableofcontents
+
+\section{Wstęp}
+
+Oto krótki opis moich doświadczeń z tabelami w dokumentach PDF kompilowanych za pomocą \emph{RStudio} na podstawie plików \emph{.Rmw}.
+\vspace{5mm}
+
+Poniższy dokument powstał przy użyciu narzędzia \emph{Sweave} stanowiącego integralną część R. \emph{Sweave} jest produktem niemieckiej myśli technicznej z początku XXI wieku (z tego co wiem jego autorem jest Friedrich Leisch – obecnie Institut für Statistik der Ludwig-Maximilians-Universität München) . Pierwotnym zastosowaniem tego pakietu było tworzenie artykułów naukowych, w których prezentowane są obliczenia przeprowadzone w R. 
+\vspace{5mm}
+
+\emph{Sweave} działa podobnie jak \emph{Markdown}. Podstawowa różnicą polega na tym, że cały dokument  piszemy w LaTeX-u, a plik ma rozszeczenie \emph{.Rmw}. Natomiast Obliczenia w R wrzuca się do \emph{Sweave} tak samo jak w \emph{Markdownie}, czyli w postaci bloków kodu, które różnią się tylko znakami otwarcia i zamknięcia:
+
+\begin{itemize}
+  \item \emph{<< >>=} - otwarcie
+  \item \emph{@} - zamknięcie
+\end{itemize}
+
+Same obliczenia i ich sposób wyświetlania jest identyczny jak w \emph{Markdown}.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlnum{2}\hlopt{+}\hlnum{2}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Aby użyć \emph{Sweave} wystarczy wybrać w \emph{RStudio} \textbf{File $\rightarrow$ New File $\rightarrow$ R Sweave}. Otworzy nam się wtedy nowy plik \emph{.Rnw}, w który używamy LaTeX-a i który kompilujemy do PDF przy użyciu przycisku "Compile PDF". Zupełnie jak w przypadku \emph{Markdown} :-)
+\vspace{5mm}
+
+Poniżej znajduje się kilka tabel wygenerowanych w \emph{Sweave} przy użyciu różnych metod. Tabele zawierają po 80 pierwszych wierszy ze zbioru \textbf{iris}. UWAGA!!!  Aby wyświetlić tabelę generowaną z R przy pomocy \emph{Sweave}, podobnie jak w \emph{Markdown}, musimy w opcjach bloku kodu (\emph{chunk options}) użyć argumentu \textbf{results='asis'}. 
+
+\section{Klasyczne rozwiązanie - ``xtable''}
+
+Klasycznym rozwiązaniem stosowanym w celu wstawianienia tabeli z R do pliku PDF jest użycie funkcji \textbf{xtable} z pakietu \emph{xtable}. W ten sposób możemy kontrolować wiele cech tabeli. Niestety jest to rozwiązanie czasochłonne - konieczność ustawiania wielu parametrów.
+
+\begin{kframe}
+\begin{alltt}
+\hlstd{tabela.2.1}\hlkwb{<-}\hlstd{xtable::} \hlkwd{xtable}\hlstd{(}\hlkwd{head}\hlstd{(iris,} \hlnum{80}\hlstd{),}
+                            \hlkwc{caption}\hlstd{=}\hlstr{"Zastosowanie funkcji xtable "}\hlstd{)}
+\hlkwd{print}\hlstd{( tabela.2.1,} \hlcom{# tabela}
+       \hlkwc{table.placement} \hlstd{=} \hlstr{"H"}\hlstd{,} \hlcom{# położenie tabeli - }
+       \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlcom{# położenie tytułu}
+       \hlkwc{include.rownames} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlcom{# uwzględnienie nazw wierszy}
+       \hlkwc{include.colnames} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlcom{# uwzględnienie nazw kolum}
+       \hlkwc{size} \hlstd{=} \hlstr{"small"}\hlstd{,} \hlcom{# rozmiar tebeli}
+       \hlkwc{tabular.environment} \hlstd{=} \hlstr{'longtable'}\hlstd{,} \hlcom{# tabela na kilku stronach}
+       \hlkwc{floating} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlcom{# "pływanie" tabeli po stronie}
+       \hlcom{# powtarzanie pierwszego wiersza na każdej stronie}
+       \hlkwc{add.to.row} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{pos} \hlstd{=} \hlkwd{list}\hlstd{(}\hlnum{0}\hlstd{),} \hlkwc{command} \hlstd{=} \hlstr{"\textbackslash{}\textbackslash{}hline \textbackslash{}\textbackslash{}endhead "}\hlstd{)}
+\hlstd{)}
+\end{alltt}
+\end{kframe}% latex table generated in R 3.1.1 by xtable 1.7-4 package
+% Tue Jun 09 11:46:08 2015
+{\small
+\begin{longtable}{rrrrrl}
+\caption{Zastosowanie funkcji xtable } \\ 
+  \hline
+ & Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species \\ 
+  \hline \endhead  \hline
+1 & 5.10 & 3.50 & 1.40 & 0.20 & setosa \\ 
+  2 & 4.90 & 3.00 & 1.40 & 0.20 & setosa \\ 
+  3 & 4.70 & 3.20 & 1.30 & 0.20 & setosa \\ 
+  4 & 4.60 & 3.10 & 1.50 & 0.20 & setosa \\ 
+  5 & 5.00 & 3.60 & 1.40 & 0.20 & setosa \\ 
+  6 & 5.40 & 3.90 & 1.70 & 0.40 & setosa \\ 
+  7 & 4.60 & 3.40 & 1.40 & 0.30 & setosa \\ 
+  8 & 5.00 & 3.40 & 1.50 & 0.20 & setosa \\ 
+  9 & 4.40 & 2.90 & 1.40 & 0.20 & setosa \\ 
+  10 & 4.90 & 3.10 & 1.50 & 0.10 & setosa \\ 
+  11 & 5.40 & 3.70 & 1.50 & 0.20 & setosa \\ 
+  12 & 4.80 & 3.40 & 1.60 & 0.20 & setosa \\ 
+  13 & 4.80 & 3.00 & 1.40 & 0.10 & setosa \\ 
+  14 & 4.30 & 3.00 & 1.10 & 0.10 & setosa \\ 
+  15 & 5.80 & 4.00 & 1.20 & 0.20 & setosa \\ 
+  16 & 5.70 & 4.40 & 1.50 & 0.40 & setosa \\ 
+  17 & 5.40 & 3.90 & 1.30 & 0.40 & setosa \\ 
+  18 & 5.10 & 3.50 & 1.40 & 0.30 & setosa \\ 
+  19 & 5.70 & 3.80 & 1.70 & 0.30 & setosa \\ 
+  20 & 5.10 & 3.80 & 1.50 & 0.30 & setosa \\ 
+  21 & 5.40 & 3.40 & 1.70 & 0.20 & setosa \\ 
+  22 & 5.10 & 3.70 & 1.50 & 0.40 & setosa \\ 
+  23 & 4.60 & 3.60 & 1.00 & 0.20 & setosa \\ 
+  24 & 5.10 & 3.30 & 1.70 & 0.50 & setosa \\ 
+  25 & 4.80 & 3.40 & 1.90 & 0.20 & setosa \\ 
+  26 & 5.00 & 3.00 & 1.60 & 0.20 & setosa \\ 
+  27 & 5.00 & 3.40 & 1.60 & 0.40 & setosa \\ 
+  28 & 5.20 & 3.50 & 1.50 & 0.20 & setosa \\ 
+  29 & 5.20 & 3.40 & 1.40 & 0.20 & setosa \\ 
+  30 & 4.70 & 3.20 & 1.60 & 0.20 & setosa \\ 
+  31 & 4.80 & 3.10 & 1.60 & 0.20 & setosa \\ 
+  32 & 5.40 & 3.40 & 1.50 & 0.40 & setosa \\ 
+  33 & 5.20 & 4.10 & 1.50 & 0.10 & setosa \\ 
+  34 & 5.50 & 4.20 & 1.40 & 0.20 & setosa \\ 
+  35 & 4.90 & 3.10 & 1.50 & 0.20 & setosa \\ 
+  36 & 5.00 & 3.20 & 1.20 & 0.20 & setosa \\ 
+  37 & 5.50 & 3.50 & 1.30 & 0.20 & setosa \\ 
+  38 & 4.90 & 3.60 & 1.40 & 0.10 & setosa \\ 
+  39 & 4.40 & 3.00 & 1.30 & 0.20 & setosa \\ 
+  40 & 5.10 & 3.40 & 1.50 & 0.20 & setosa \\ 
+  41 & 5.00 & 3.50 & 1.30 & 0.30 & setosa \\ 
+  42 & 4.50 & 2.30 & 1.30 & 0.30 & setosa \\ 
+  43 & 4.40 & 3.20 & 1.30 & 0.20 & setosa \\ 
+  44 & 5.00 & 3.50 & 1.60 & 0.60 & setosa \\ 
+  45 & 5.10 & 3.80 & 1.90 & 0.40 & setosa \\ 
+  46 & 4.80 & 3.00 & 1.40 & 0.30 & setosa \\ 
+  47 & 5.10 & 3.80 & 1.60 & 0.20 & setosa \\ 
+  48 & 4.60 & 3.20 & 1.40 & 0.20 & setosa \\ 
+  49 & 5.30 & 3.70 & 1.50 & 0.20 & setosa \\ 
+  50 & 5.00 & 3.30 & 1.40 & 0.20 & setosa \\ 
+  51 & 7.00 & 3.20 & 4.70 & 1.40 & versicolor \\ 
+  52 & 6.40 & 3.20 & 4.50 & 1.50 & versicolor \\ 
+  53 & 6.90 & 3.10 & 4.90 & 1.50 & versicolor \\ 
+  54 & 5.50 & 2.30 & 4.00 & 1.30 & versicolor \\ 
+  55 & 6.50 & 2.80 & 4.60 & 1.50 & versicolor \\ 
+  56 & 5.70 & 2.80 & 4.50 & 1.30 & versicolor \\ 
+  57 & 6.30 & 3.30 & 4.70 & 1.60 & versicolor \\ 
+  58 & 4.90 & 2.40 & 3.30 & 1.00 & versicolor \\ 
+  59 & 6.60 & 2.90 & 4.60 & 1.30 & versicolor \\ 
+  60 & 5.20 & 2.70 & 3.90 & 1.40 & versicolor \\ 
+  61 & 5.00 & 2.00 & 3.50 & 1.00 & versicolor \\ 
+  62 & 5.90 & 3.00 & 4.20 & 1.50 & versicolor \\ 
+  63 & 6.00 & 2.20 & 4.00 & 1.00 & versicolor \\ 
+  64 & 6.10 & 2.90 & 4.70 & 1.40 & versicolor \\ 
+  65 & 5.60 & 2.90 & 3.60 & 1.30 & versicolor \\ 
+  66 & 6.70 & 3.10 & 4.40 & 1.40 & versicolor \\ 
+  67 & 5.60 & 3.00 & 4.50 & 1.50 & versicolor \\ 
+  68 & 5.80 & 2.70 & 4.10 & 1.00 & versicolor \\ 
+  69 & 6.20 & 2.20 & 4.50 & 1.50 & versicolor \\ 
+  70 & 5.60 & 2.50 & 3.90 & 1.10 & versicolor \\ 
+  71 & 5.90 & 3.20 & 4.80 & 1.80 & versicolor \\ 
+  72 & 6.10 & 2.80 & 4.00 & 1.30 & versicolor \\ 
+  73 & 6.30 & 2.50 & 4.90 & 1.50 & versicolor \\ 
+  74 & 6.10 & 2.80 & 4.70 & 1.20 & versicolor \\ 
+  75 & 6.40 & 2.90 & 4.30 & 1.30 & versicolor \\ 
+  76 & 6.60 & 3.00 & 4.40 & 1.40 & versicolor \\ 
+  77 & 6.80 & 2.80 & 4.80 & 1.40 & versicolor \\ 
+  78 & 6.70 & 3.00 & 5.00 & 1.70 & versicolor \\ 
+  79 & 6.00 & 2.90 & 4.50 & 1.50 & versicolor \\ 
+  80 & 5.70 & 2.60 & 3.50 & 1.00 & versicolor \\ 
+   \hline
+\hline
+\end{longtable}
+}
+
+
+\section{Prostsze rozwiązanie - ``kable''}
+
+Innym rozwiązaniem, chyba mniej znanym, jest zastosowanie funkcji \textbf{kable} z pakietu \emph{knitr}. Działa ona zarówno w dokumentach rmarkdownowych, przy kompilowaniu plików HTML, PDF i MsWord (patrz: Tabele\_rmarkdown.pdf, Tabele\_rmarkdown.html, Tabele\_rmarkdown.docx), jak i przy produkowaniu dokumnetów za pomocą \emph{Sweave} (czyli w LaTeX-u). Podstawową jej zaletą jest prostota. Wszystko ogranicza się do kilku argumentów, co jedni uznają za zaletę - mniej roboty, a inni za wadę - brak pełnej kontroli. 
+
+\subsection{Zwykłe ``kable''}
+
+Poniżej, przy użyciu funkcji \textbf{kable}, stworzono najprostrzą z możliwych tabel. Jak widać nie wszystko się udało. Tabela nie wygląda ładnie, a na dodatek nie przechodzi na kolejną stronę.
+
+\begin{kframe}
+\begin{alltt}
+\hlstd{knitr::} \hlkwd{kable}\hlstd{(} \hlkwd{head}\hlstd{(iris,} \hlnum{80}\hlstd{) ,} \hlkwc{format} \hlstd{=}\hlstr{"latex"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\begin{tabular}{r|r|r|r|l}
+\hline
+Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
+\hline
+5.1 & 3.5 & 1.4 & 0.2 & setosa\\
+\hline
+4.9 & 3.0 & 1.4 & 0.2 & setosa\\
+\hline
+4.7 & 3.2 & 1.3 & 0.2 & setosa\\
+\hline
+4.6 & 3.1 & 1.5 & 0.2 & setosa\\
+\hline
+5.0 & 3.6 & 1.4 & 0.2 & setosa\\
+\hline
+5.4 & 3.9 & 1.7 & 0.4 & setosa\\
+\hline
+4.6 & 3.4 & 1.4 & 0.3 & setosa\\
+\hline
+5.0 & 3.4 & 1.5 & 0.2 & setosa\\
+\hline
+4.4 & 2.9 & 1.4 & 0.2 & setosa\\
+\hline
+4.9 & 3.1 & 1.5 & 0.1 & setosa\\
+\hline
+5.4 & 3.7 & 1.5 & 0.2 & setosa\\
+\hline
+4.8 & 3.4 & 1.6 & 0.2 & setosa\\
+\hline
+4.8 & 3.0 & 1.4 & 0.1 & setosa\\
+\hline
+4.3 & 3.0 & 1.1 & 0.1 & setosa\\
+\hline
+5.8 & 4.0 & 1.2 & 0.2 & setosa\\
+\hline
+5.7 & 4.4 & 1.5 & 0.4 & setosa\\
+\hline
+5.4 & 3.9 & 1.3 & 0.4 & setosa\\
+\hline
+5.1 & 3.5 & 1.4 & 0.3 & setosa\\
+\hline
+5.7 & 3.8 & 1.7 & 0.3 & setosa\\
+\hline
+5.1 & 3.8 & 1.5 & 0.3 & setosa\\
+\hline
+5.4 & 3.4 & 1.7 & 0.2 & setosa\\
+\hline
+5.1 & 3.7 & 1.5 & 0.4 & setosa\\
+\hline
+4.6 & 3.6 & 1.0 & 0.2 & setosa\\
+\hline
+5.1 & 3.3 & 1.7 & 0.5 & setosa\\
+\hline
+4.8 & 3.4 & 1.9 & 0.2 & setosa\\
+\hline
+5.0 & 3.0 & 1.6 & 0.2 & setosa\\
+\hline
+5.0 & 3.4 & 1.6 & 0.4 & setosa\\
+\hline
+5.2 & 3.5 & 1.5 & 0.2 & setosa\\
+\hline
+5.2 & 3.4 & 1.4 & 0.2 & setosa\\
+\hline
+4.7 & 3.2 & 1.6 & 0.2 & setosa\\
+\hline
+4.8 & 3.1 & 1.6 & 0.2 & setosa\\
+\hline
+5.4 & 3.4 & 1.5 & 0.4 & setosa\\
+\hline
+5.2 & 4.1 & 1.5 & 0.1 & setosa\\
+\hline
+5.5 & 4.2 & 1.4 & 0.2 & setosa\\
+\hline
+4.9 & 3.1 & 1.5 & 0.2 & setosa\\
+\hline
+5.0 & 3.2 & 1.2 & 0.2 & setosa\\
+\hline
+5.5 & 3.5 & 1.3 & 0.2 & setosa\\
+\hline
+4.9 & 3.6 & 1.4 & 0.1 & setosa\\
+\hline
+4.4 & 3.0 & 1.3 & 0.2 & setosa\\
+\hline
+5.1 & 3.4 & 1.5 & 0.2 & setosa\\
+\hline
+5.0 & 3.5 & 1.3 & 0.3 & setosa\\
+\hline
+4.5 & 2.3 & 1.3 & 0.3 & setosa\\
+\hline
+4.4 & 3.2 & 1.3 & 0.2 & setosa\\
+\hline
+5.0 & 3.5 & 1.6 & 0.6 & setosa\\
+\hline
+5.1 & 3.8 & 1.9 & 0.4 & setosa\\
+\hline
+4.8 & 3.0 & 1.4 & 0.3 & setosa\\
+\hline
+5.1 & 3.8 & 1.6 & 0.2 & setosa\\
+\hline
+4.6 & 3.2 & 1.4 & 0.2 & setosa\\
+\hline
+5.3 & 3.7 & 1.5 & 0.2 & setosa\\
+\hline
+5.0 & 3.3 & 1.4 & 0.2 & setosa\\
+\hline
+7.0 & 3.2 & 4.7 & 1.4 & versicolor\\
+\hline
+6.4 & 3.2 & 4.5 & 1.5 & versicolor\\
+\hline
+6.9 & 3.1 & 4.9 & 1.5 & versicolor\\
+\hline
+5.5 & 2.3 & 4.0 & 1.3 & versicolor\\
+\hline
+6.5 & 2.8 & 4.6 & 1.5 & versicolor\\
+\hline
+5.7 & 2.8 & 4.5 & 1.3 & versicolor\\
+\hline
+6.3 & 3.3 & 4.7 & 1.6 & versicolor\\
+\hline
+4.9 & 2.4 & 3.3 & 1.0 & versicolor\\
+\hline
+6.6 & 2.9 & 4.6 & 1.3 & versicolor\\
+\hline
+5.2 & 2.7 & 3.9 & 1.4 & versicolor\\
+\hline
+5.0 & 2.0 & 3.5 & 1.0 & versicolor\\
+\hline
+5.9 & 3.0 & 4.2 & 1.5 & versicolor\\
+\hline
+6.0 & 2.2 & 4.0 & 1.0 & versicolor\\
+\hline
+6.1 & 2.9 & 4.7 & 1.4 & versicolor\\
+\hline
+5.6 & 2.9 & 3.6 & 1.3 & versicolor\\
+\hline
+6.7 & 3.1 & 4.4 & 1.4 & versicolor\\
+\hline
+5.6 & 3.0 & 4.5 & 1.5 & versicolor\\
+\hline
+5.8 & 2.7 & 4.1 & 1.0 & versicolor\\
+\hline
+6.2 & 2.2 & 4.5 & 1.5 & versicolor\\
+\hline
+5.6 & 2.5 & 3.9 & 1.1 & versicolor\\
+\hline
+5.9 & 3.2 & 4.8 & 1.8 & versicolor\\
+\hline
+6.1 & 2.8 & 4.0 & 1.3 & versicolor\\
+\hline
+6.3 & 2.5 & 4.9 & 1.5 & versicolor\\
+\hline
+6.1 & 2.8 & 4.7 & 1.2 & versicolor\\
+\hline
+6.4 & 2.9 & 4.3 & 1.3 & versicolor\\
+\hline
+6.6 & 3.0 & 4.4 & 1.4 & versicolor\\
+\hline
+6.8 & 2.8 & 4.8 & 1.4 & versicolor\\
+\hline
+6.7 & 3.0 & 5.0 & 1.7 & versicolor\\
+\hline
+6.0 & 2.9 & 4.5 & 1.5 & versicolor\\
+\hline
+5.7 & 2.6 & 3.5 & 1.0 & versicolor\\
+\hline
+\end{tabular}
+
+
+\subsection{Lepsze ``kable'' z użyciem biblioteki \emph{longtable}}
+
+Aby uzyskać przy użyciu funkcji \textbf{kable} tabelę, która przejdzie na następne strony, wystarczy dodać jeden argument \textbf{longtable=TRUE} oraz uruchomić w LaTeX-u, na początku pliku \emph{.Rnw}, bibliotekę \textbf{longtable} (patrz 7 wiersz pliku Tabele\_LATEX.Rnw). Dzięku temu tabela zostanie przeniesiona na następne strony.
+
+\begin{kframe}
+\begin{alltt}
+\hlstd{knitr::} \hlkwd{kable}\hlstd{(} \hlkwd{head}\hlstd{(iris,} \hlnum{80}\hlstd{),} \hlkwc{longtable}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\begin{longtable}{r|r|r|r|l}
+\hline
+Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
+\hline
+5.1 & 3.5 & 1.4 & 0.2 & setosa\\
+\hline
+4.9 & 3.0 & 1.4 & 0.2 & setosa\\
+\hline
+4.7 & 3.2 & 1.3 & 0.2 & setosa\\
+\hline
+4.6 & 3.1 & 1.5 & 0.2 & setosa\\
+\hline
+5.0 & 3.6 & 1.4 & 0.2 & setosa\\
+\hline
+5.4 & 3.9 & 1.7 & 0.4 & setosa\\
+\hline
+4.6 & 3.4 & 1.4 & 0.3 & setosa\\
+\hline
+5.0 & 3.4 & 1.5 & 0.2 & setosa\\
+\hline
+4.4 & 2.9 & 1.4 & 0.2 & setosa\\
+\hline
+4.9 & 3.1 & 1.5 & 0.1 & setosa\\
+\hline
+5.4 & 3.7 & 1.5 & 0.2 & setosa\\
+\hline
+4.8 & 3.4 & 1.6 & 0.2 & setosa\\
+\hline
+4.8 & 3.0 & 1.4 & 0.1 & setosa\\
+\hline
+4.3 & 3.0 & 1.1 & 0.1 & setosa\\
+\hline
+5.8 & 4.0 & 1.2 & 0.2 & setosa\\
+\hline
+5.7 & 4.4 & 1.5 & 0.4 & setosa\\
+\hline
+5.4 & 3.9 & 1.3 & 0.4 & setosa\\
+\hline
+5.1 & 3.5 & 1.4 & 0.3 & setosa\\
+\hline
+5.7 & 3.8 & 1.7 & 0.3 & setosa\\
+\hline
+5.1 & 3.8 & 1.5 & 0.3 & setosa\\
+\hline
+5.4 & 3.4 & 1.7 & 0.2 & setosa\\
+\hline
+5.1 & 3.7 & 1.5 & 0.4 & setosa\\
+\hline
+4.6 & 3.6 & 1.0 & 0.2 & setosa\\
+\hline
+5.1 & 3.3 & 1.7 & 0.5 & setosa\\
+\hline
+4.8 & 3.4 & 1.9 & 0.2 & setosa\\
+\hline
+5.0 & 3.0 & 1.6 & 0.2 & setosa\\
+\hline
+5.0 & 3.4 & 1.6 & 0.4 & setosa\\
+\hline
+5.2 & 3.5 & 1.5 & 0.2 & setosa\\
+\hline
+5.2 & 3.4 & 1.4 & 0.2 & setosa\\
+\hline
+4.7 & 3.2 & 1.6 & 0.2 & setosa\\
+\hline
+4.8 & 3.1 & 1.6 & 0.2 & setosa\\
+\hline
+5.4 & 3.4 & 1.5 & 0.4 & setosa\\
+\hline
+5.2 & 4.1 & 1.5 & 0.1 & setosa\\
+\hline
+5.5 & 4.2 & 1.4 & 0.2 & setosa\\
+\hline
+4.9 & 3.1 & 1.5 & 0.2 & setosa\\
+\hline
+5.0 & 3.2 & 1.2 & 0.2 & setosa\\
+\hline
+5.5 & 3.5 & 1.3 & 0.2 & setosa\\
+\hline
+4.9 & 3.6 & 1.4 & 0.1 & setosa\\
+\hline
+4.4 & 3.0 & 1.3 & 0.2 & setosa\\
+\hline
+5.1 & 3.4 & 1.5 & 0.2 & setosa\\
+\hline
+5.0 & 3.5 & 1.3 & 0.3 & setosa\\
+\hline
+4.5 & 2.3 & 1.3 & 0.3 & setosa\\
+\hline
+4.4 & 3.2 & 1.3 & 0.2 & setosa\\
+\hline
+5.0 & 3.5 & 1.6 & 0.6 & setosa\\
+\hline
+5.1 & 3.8 & 1.9 & 0.4 & setosa\\
+\hline
+4.8 & 3.0 & 1.4 & 0.3 & setosa\\
+\hline
+5.1 & 3.8 & 1.6 & 0.2 & setosa\\
+\hline
+4.6 & 3.2 & 1.4 & 0.2 & setosa\\
+\hline
+5.3 & 3.7 & 1.5 & 0.2 & setosa\\
+\hline
+5.0 & 3.3 & 1.4 & 0.2 & setosa\\
+\hline
+7.0 & 3.2 & 4.7 & 1.4 & versicolor\\
+\hline
+6.4 & 3.2 & 4.5 & 1.5 & versicolor\\
+\hline
+6.9 & 3.1 & 4.9 & 1.5 & versicolor\\
+\hline
+5.5 & 2.3 & 4.0 & 1.3 & versicolor\\
+\hline
+6.5 & 2.8 & 4.6 & 1.5 & versicolor\\
+\hline
+5.7 & 2.8 & 4.5 & 1.3 & versicolor\\
+\hline
+6.3 & 3.3 & 4.7 & 1.6 & versicolor\\
+\hline
+4.9 & 2.4 & 3.3 & 1.0 & versicolor\\
+\hline
+6.6 & 2.9 & 4.6 & 1.3 & versicolor\\
+\hline
+5.2 & 2.7 & 3.9 & 1.4 & versicolor\\
+\hline
+5.0 & 2.0 & 3.5 & 1.0 & versicolor\\
+\hline
+5.9 & 3.0 & 4.2 & 1.5 & versicolor\\
+\hline
+6.0 & 2.2 & 4.0 & 1.0 & versicolor\\
+\hline
+6.1 & 2.9 & 4.7 & 1.4 & versicolor\\
+\hline
+5.6 & 2.9 & 3.6 & 1.3 & versicolor\\
+\hline
+6.7 & 3.1 & 4.4 & 1.4 & versicolor\\
+\hline
+5.6 & 3.0 & 4.5 & 1.5 & versicolor\\
+\hline
+5.8 & 2.7 & 4.1 & 1.0 & versicolor\\
+\hline
+6.2 & 2.2 & 4.5 & 1.5 & versicolor\\
+\hline
+5.6 & 2.5 & 3.9 & 1.1 & versicolor\\
+\hline
+5.9 & 3.2 & 4.8 & 1.8 & versicolor\\
+\hline
+6.1 & 2.8 & 4.0 & 1.3 & versicolor\\
+\hline
+6.3 & 2.5 & 4.9 & 1.5 & versicolor\\
+\hline
+6.1 & 2.8 & 4.7 & 1.2 & versicolor\\
+\hline
+6.4 & 2.9 & 4.3 & 1.3 & versicolor\\
+\hline
+6.6 & 3.0 & 4.4 & 1.4 & versicolor\\
+\hline
+6.8 & 2.8 & 4.8 & 1.4 & versicolor\\
+\hline
+6.7 & 3.0 & 5.0 & 1.7 & versicolor\\
+\hline
+6.0 & 2.9 & 4.5 & 1.5 & versicolor\\
+\hline
+5.7 & 2.6 & 3.5 & 1.0 & versicolor\\
+\hline
+\end{longtable}
+
+
+\subsection{Najlesze ``kable'' z użyciem bibliotek \emph{longtable} i \emph{booktabs}}
+
+Ale to nie wszystko. Dodatkowo do funkcji \textbf{kable} można dołożyć bibliotekę \textbf{booktabs}, która nada tabeli ładniejszy wygląd. Poniżej zastosowanie funkcji \textbf{kable} z jej wszystkimi możliwościami, w tym z dodaniem tytyłu.
+
+
+\begin{kframe}
+\begin{alltt}
+\hlstd{knitr::} \hlkwd{kable}\hlstd{(} \hlkwd{head}\hlstd{(iris,} \hlnum{80}\hlstd{) ,}
+        \hlkwc{caption}\hlstd{=}\hlstr{"Tabela 4. Wykorzystanie wyszystkich możliwości funkcji kable + tytuł"}\hlstd{,}
+        \hlkwc{row.names} \hlstd{= T,} \hlcom{# nazwy wierszy}
+        \hlkwc{format}\hlstd{=}\hlstr{"latex"}\hlstd{,} \hlcom{# format LaTeX}
+        \hlkwc{longtable}\hlstd{=}\hlnum{TRUE}\hlstd{,}  \hlcom{# biblioteka longtable}
+        \hlkwc{booktabs}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlcom{# biblioteka booktabs}
+        \hlkwc{align}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{'l'}\hlstd{,} \hlstr{'c'}\hlstd{,} \hlstr{'r'}\hlstd{,} \hlstr{'l'}\hlstd{,} \hlstr{'r'}\hlstd{),} \hlcom{# wyrównanie w kolumanch}
+        \hlkwc{digits}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{0}\hlstd{)} \hlcom{# zaokrąglenia liczb w kolumnach}
+        \hlstd{)}
+\end{alltt}
+\end{kframe}
+\caption{Tabela 4. Wykorzystanie wyszystkich możliwości funkcji kable + tytuł}
+\begin{longtable}{llcrlr}
+\toprule
+  & Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
+\midrule
+1 & 5 & 3.5 & 1.4 & 0.2 & setosa\\
+2 & 5 & 3.0 & 1.4 & 0.2 & setosa\\
+3 & 5 & 3.2 & 1.3 & 0.2 & setosa\\
+4 & 5 & 3.1 & 1.5 & 0.2 & setosa\\
+5 & 5 & 3.6 & 1.4 & 0.2 & setosa\\
+\addlinespace
+6 & 5 & 3.9 & 1.7 & 0.4 & setosa\\
+7 & 5 & 3.4 & 1.4 & 0.3 & setosa\\
+8 & 5 & 3.4 & 1.5 & 0.2 & setosa\\
+9 & 4 & 2.9 & 1.4 & 0.2 & setosa\\
+10 & 5 & 3.1 & 1.5 & 0.1 & setosa\\
+\addlinespace
+11 & 5 & 3.7 & 1.5 & 0.2 & setosa\\
+12 & 5 & 3.4 & 1.6 & 0.2 & setosa\\
+13 & 5 & 3.0 & 1.4 & 0.1 & setosa\\
+14 & 4 & 3.0 & 1.1 & 0.1 & setosa\\
+15 & 6 & 4.0 & 1.2 & 0.2 & setosa\\
+\addlinespace
+16 & 6 & 4.4 & 1.5 & 0.4 & setosa\\
+17 & 5 & 3.9 & 1.3 & 0.4 & setosa\\
+18 & 5 & 3.5 & 1.4 & 0.3 & setosa\\
+19 & 6 & 3.8 & 1.7 & 0.3 & setosa\\
+20 & 5 & 3.8 & 1.5 & 0.3 & setosa\\
+\addlinespace
+21 & 5 & 3.4 & 1.7 & 0.2 & setosa\\
+22 & 5 & 3.7 & 1.5 & 0.4 & setosa\\
+23 & 5 & 3.6 & 1.0 & 0.2 & setosa\\
+24 & 5 & 3.3 & 1.7 & 0.5 & setosa\\
+25 & 5 & 3.4 & 1.9 & 0.2 & setosa\\
+\addlinespace
+26 & 5 & 3.0 & 1.6 & 0.2 & setosa\\
+27 & 5 & 3.4 & 1.6 & 0.4 & setosa\\
+28 & 5 & 3.5 & 1.5 & 0.2 & setosa\\
+29 & 5 & 3.4 & 1.4 & 0.2 & setosa\\
+30 & 5 & 3.2 & 1.6 & 0.2 & setosa\\
+\addlinespace
+31 & 5 & 3.1 & 1.6 & 0.2 & setosa\\
+32 & 5 & 3.4 & 1.5 & 0.4 & setosa\\
+33 & 5 & 4.1 & 1.5 & 0.1 & setosa\\
+34 & 6 & 4.2 & 1.4 & 0.2 & setosa\\
+35 & 5 & 3.1 & 1.5 & 0.2 & setosa\\
+\addlinespace
+36 & 5 & 3.2 & 1.2 & 0.2 & setosa\\
+37 & 6 & 3.5 & 1.3 & 0.2 & setosa\\
+38 & 5 & 3.6 & 1.4 & 0.1 & setosa\\
+39 & 4 & 3.0 & 1.3 & 0.2 & setosa\\
+40 & 5 & 3.4 & 1.5 & 0.2 & setosa\\
+\addlinespace
+41 & 5 & 3.5 & 1.3 & 0.3 & setosa\\
+42 & 4 & 2.3 & 1.3 & 0.3 & setosa\\
+43 & 4 & 3.2 & 1.3 & 0.2 & setosa\\
+44 & 5 & 3.5 & 1.6 & 0.6 & setosa\\
+45 & 5 & 3.8 & 1.9 & 0.4 & setosa\\
+\addlinespace
+46 & 5 & 3.0 & 1.4 & 0.3 & setosa\\
+47 & 5 & 3.8 & 1.6 & 0.2 & setosa\\
+48 & 5 & 3.2 & 1.4 & 0.2 & setosa\\
+49 & 5 & 3.7 & 1.5 & 0.2 & setosa\\
+50 & 5 & 3.3 & 1.4 & 0.2 & setosa\\
+\addlinespace
+51 & 7 & 3.2 & 4.7 & 1.4 & versicolor\\
+52 & 6 & 3.2 & 4.5 & 1.5 & versicolor\\
+53 & 7 & 3.1 & 4.9 & 1.5 & versicolor\\
+54 & 6 & 2.3 & 4.0 & 1.3 & versicolor\\
+55 & 6 & 2.8 & 4.6 & 1.5 & versicolor\\
+\addlinespace
+56 & 6 & 2.8 & 4.5 & 1.3 & versicolor\\
+57 & 6 & 3.3 & 4.7 & 1.6 & versicolor\\
+58 & 5 & 2.4 & 3.3 & 1.0 & versicolor\\
+59 & 7 & 2.9 & 4.6 & 1.3 & versicolor\\
+60 & 5 & 2.7 & 3.9 & 1.4 & versicolor\\
+\addlinespace
+61 & 5 & 2.0 & 3.5 & 1.0 & versicolor\\
+62 & 6 & 3.0 & 4.2 & 1.5 & versicolor\\
+63 & 6 & 2.2 & 4.0 & 1.0 & versicolor\\
+64 & 6 & 2.9 & 4.7 & 1.4 & versicolor\\
+65 & 6 & 2.9 & 3.6 & 1.3 & versicolor\\
+\addlinespace
+66 & 7 & 3.1 & 4.4 & 1.4 & versicolor\\
+67 & 6 & 3.0 & 4.5 & 1.5 & versicolor\\
+68 & 6 & 2.7 & 4.1 & 1.0 & versicolor\\
+69 & 6 & 2.2 & 4.5 & 1.5 & versicolor\\
+70 & 6 & 2.5 & 3.9 & 1.1 & versicolor\\
+\addlinespace
+71 & 6 & 3.2 & 4.8 & 1.8 & versicolor\\
+72 & 6 & 2.8 & 4.0 & 1.3 & versicolor\\
+73 & 6 & 2.5 & 4.9 & 1.5 & versicolor\\
+74 & 6 & 2.8 & 4.7 & 1.2 & versicolor\\
+75 & 6 & 2.9 & 4.3 & 1.3 & versicolor\\
+\addlinespace
+76 & 7 & 3.0 & 4.4 & 1.4 & versicolor\\
+77 & 7 & 2.8 & 4.8 & 1.4 & versicolor\\
+78 & 7 & 3.0 & 5.0 & 1.7 & versicolor\\
+79 & 6 & 2.9 & 4.5 & 1.5 & versicolor\\
+80 & 6 & 2.6 & 3.5 & 1.0 & versicolor\\
+\bottomrule
+\end{longtable}
+
+
+Pytanie, czy domyślny sposób umieszczania tytułu jest dla nas satysfakcjonujący. Jeżeli nie to możemy go dopisać ręcznie zwykły (w tym przypadku wyśrodkowany) tekst, tak jak poniżej.
+
+\begin{center}
+Tabela 5. Wykorzystanie wyszystkich możliwości funkcji \textbf{kable} + tytuł
+\end{center}
+
+
+\begin{longtable}{llcrlr}
+\toprule
+  & Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
+\midrule
+1 & 5 & 3.5 & 1.4 & 0.2 & setosa\\
+2 & 5 & 3.0 & 1.4 & 0.2 & setosa\\
+3 & 5 & 3.2 & 1.3 & 0.2 & setosa\\
+4 & 5 & 3.1 & 1.5 & 0.2 & setosa\\
+5 & 5 & 3.6 & 1.4 & 0.2 & setosa\\
+\addlinespace
+6 & 5 & 3.9 & 1.7 & 0.4 & setosa\\
+7 & 5 & 3.4 & 1.4 & 0.3 & setosa\\
+8 & 5 & 3.4 & 1.5 & 0.2 & setosa\\
+9 & 4 & 2.9 & 1.4 & 0.2 & setosa\\
+10 & 5 & 3.1 & 1.5 & 0.1 & setosa\\
+\bottomrule
+\end{longtable}
+
+
+
+\end{document}

@@ -1,0 +1,30 @@
+---
+title: "Dodawanie tytułu do tabeli generowanej z R przy użyciu funkcji kable z pliku markdown" 
+author: "Zbigniew Marczewski"
+date: "Wtorek, 9 czerwca 2015 r."
+output:  
+  html_document:
+      theme: united
+---
+
+# Dodawanie tytułu do tabeli na przykładzie dokumentu HTML
+
+Aby dodać tytuł do tabeli generowanej z dokumentu rmarkdown przy użyciu funkcji __kable__  należy:
+
+  1. dla argumentu _format_ wybrać format pliku docelowego
+    + "__latex__" - dokumenty PDF
+    + "__html__" - dokumnety html
+    + "__pandoc__" - dokumnety MsWord
+    + "__markdown__" - dokumnety markdown
+  2. dla argumentu _caption_ wybrać treść tytułu tabeli 
+
+Poniżej przykład tabeli wygenerowane dla dokumnetu w formacie HTML.
+
+```{r, results='asis'}
+knitr::kable( head(mtcars,100),
+                format="html", # format tabeli
+                align = c( "l","r","l","r","l","r","l","r","l","r","l"),
+                digits=c(2,0,0,0,1,1,2,2,2,2,2),
+                caption = "Tytuł tabeli", # tytuł
+              )
+```

@@ -1,0 +1,123 @@
+\documentclass[a4paper, 10pt]{article} % ustawienia dokumentu
+\usepackage{polski} % język
+\usepackage[utf8]{inputenc} % język
+\setlength{\parindent}{0pt} % wciecie akapitu
+\usepackage[margin=1in]{geometry} % marginesy
+\linespread{1.3} % interlinia 1,5 
+\usepackage{longtable} % ustawienia dla tabel - bliblioteka longtable
+\usepackage{booktabs} % ustawienia dla tabel - bliblioteka booktabs
+
+\begin{document}
+
+\title{Generowanie tabele w LaTeX-u przy użyciu funkcji \emph{kable}}
+\date{9 czerwca 2015 r.}
+\author{ Zbyszek Marczewski}
+
+\maketitle
+
+\tableofcontents
+
+\section{Wstęp}
+
+Oto krótki opis moich doświadczeń z tabelami w dokumentach PDF kompilowanych za pomocą \emph{RStudio} na podstawie plików \emph{.Rmw}.
+\vspace{5mm}
+
+Poniższy dokument powstał przy użyciu narzędzia \emph{Sweave} stanowiącego integralną część R. \emph{Sweave} jest produktem niemieckiej myśli technicznej z początku XXI wieku (z tego co wiem jego autorem jest Friedrich Leisch – obecnie Institut für Statistik der Ludwig-Maximilians-Universität München) . Pierwotnym zastosowaniem tego pakietu było tworzenie artykułów naukowych, w których prezentowane są obliczenia przeprowadzone w R. 
+\vspace{5mm}
+
+\emph{Sweave} działa podobnie jak \emph{Markdown}. Podstawowa różnicą polega na tym, że cały dokument  piszemy w LaTeX-u, a plik ma rozszeczenie \emph{.Rmw}. Natomiast Obliczenia w R wrzuca się do \emph{Sweave} tak samo jak w \emph{Markdownie}, czyli w postaci bloków kodu, które różnią się tylko znakami otwarcia i zamknięcia:
+
+\begin{itemize}
+  \item \emph{<< >>=} - otwarcie
+  \item \emph{@} - zamknięcie
+\end{itemize}
+
+Same obliczenia i ich sposób wyświetlania jest identyczny jak w \emph{Markdown}.
+
+<< >>=
+2+2
+@
+
+Aby użyć \emph{Sweave} wystarczy wybrać w \emph{RStudio} \textbf{File $\rightarrow$ New File $\rightarrow$ R Sweave}. Otworzy nam się wtedy nowy plik \emph{.Rnw}, w który używamy LaTeX-a i który kompilujemy do PDF przy użyciu przycisku "Compile PDF". Zupełnie jak w przypadku \emph{Markdown} :-)
+\vspace{5mm}
+
+Poniżej znajduje się kilka tabel wygenerowanych w \emph{Sweave} przy użyciu różnych metod. Tabele zawierają po 80 pierwszych wierszy ze zbioru \textbf{iris}. UWAGA!!!  Aby wyświetlić tabelę generowaną z R przy pomocy \emph{Sweave}, podobnie jak w \emph{Markdown}, musimy w opcjach bloku kodu (\emph{chunk options}) użyć argumentu \textbf{results='asis'}. 
+
+\section{Klasyczne rozwiązanie - ``xtable''}
+
+Klasycznym rozwiązaniem stosowanym w celu wstawianienia tabeli z R do pliku PDF jest użycie funkcji \textbf{xtable} z pakietu \emph{xtable}. W ten sposób możemy kontrolować wiele cech tabeli. Niestety jest to rozwiązanie czasochłonne - konieczność ustawiania wielu parametrów.
+
+<<results='asis'>>=
+tabela.2.1<-xtable:: xtable(head(iris, 80), 
+                            caption="Zastosowanie funkcji xtable ")
+print( tabela.2.1, # tabela
+       table.placement = "H", # położenie tabeli - 
+       caption.placement = "top", # położenie tytułu
+       include.rownames = TRUE, # uwzględnienie nazw wierszy
+       include.colnames = TRUE, # uwzględnienie nazw kolum
+       size = "small", # rozmiar tebeli
+       tabular.environment = 'longtable', # tabela na kilku stronach
+       floating = FALSE, # "pływanie" tabeli po stronie
+       # powtarzanie pierwszego wiersza na każdej stronie
+       add.to.row = list(pos = list(0), command = "\\hline \\endhead ") 
+)
+@ 
+
+\section{Prostsze rozwiązanie - ``kable''}
+
+Innym rozwiązaniem, chyba mniej znanym, jest zastosowanie funkcji \textbf{kable} z pakietu \emph{knitr}. Działa ona zarówno w dokumentach rmarkdownowych, przy kompilowaniu plików HTML, PDF i MsWord (patrz: Tabele\_rmarkdown.pdf, Tabele\_rmarkdown.html, Tabele\_rmarkdown.docx), jak i przy produkowaniu dokumnetów za pomocą \emph{Sweave} (czyli w LaTeX-u). Podstawową jej zaletą jest prostota. Wszystko ogranicza się do kilku argumentów, co jedni uznają za zaletę - mniej roboty, a inni za wadę - brak pełnej kontroli. 
+
+\subsection{Zwykłe ``kable''}
+
+Poniżej, przy użyciu funkcji \textbf{kable}, stworzono najprostrzą z możliwych tabel. Jak widać nie wszystko się udało. Tabela nie wygląda ładnie, a na dodatek nie przechodzi na kolejną stronę.
+
+<<results='asis'>>=
+knitr:: kable( head(iris, 80) , format ="latex")
+@
+
+\subsection{Lepsze ``kable'' z użyciem biblioteki \emph{longtable}}
+
+Aby uzyskać przy użyciu funkcji \textbf{kable} tabelę, która przejdzie na następne strony, wystarczy dodać jeden argument \textbf{longtable=TRUE} oraz uruchomić w LaTeX-u, na początku pliku \emph{.Rnw}, bibliotekę \textbf{longtable} (patrz 7 wiersz pliku Tabele\_LATEX.Rnw). Dzięku temu tabela zostanie przeniesiona na następne strony.
+
+<<results='asis'>>=
+knitr:: kable( head(iris, 80), longtable=TRUE)
+@
+
+\subsection{Najlesze ``kable'' z użyciem bibliotek \emph{longtable} i \emph{booktabs}}
+
+Ale to nie wszystko. Dodatkowo do funkcji \textbf{kable} można dołożyć bibliotekę \textbf{booktabs}, która nada tabeli ładniejszy wygląd. Poniżej zastosowanie funkcji \textbf{kable} z jej wszystkimi możliwościami, w tym z dodaniem tytyłu.
+
+
+<<results='asis'>>=
+knitr:: kable( head(iris, 80) ,
+        caption="Tabela 4. Wykorzystanie wyszystkich możliwości funkcji kable + tytuł",
+        row.names = T, # nazwy wierszy
+        format="latex", # format LaTeX
+        longtable=TRUE,  # biblioteka longtable
+        booktabs=TRUE, # biblioteka booktabs
+        align=c('l', 'c', 'r', 'l', 'r'), # wyrównanie w kolumanch
+        digits=c(0,1,2,3,0) # zaokrąglenia liczb w kolumnach
+        ) 
+
+@
+
+Pytanie, czy domyślny sposób umieszczania tytułu jest dla nas satysfakcjonujący. Jeżeli nie to możemy go dopisać ręcznie zwykły (w tym przypadku wyśrodkowany) tekst, tak jak poniżej.
+
+\begin{center}
+Tabela 5. Wykorzystanie wyszystkich możliwości funkcji \textbf{kable} + tytuł
+\end{center}
+
+<<results='asis', echo=FALSE>>=
+knitr:: kable( head(iris, 10) ,   
+               row.names = T, # nazwy wierszy
+               format="latex", # format LaTeX
+               longtable=TRUE,  # biblioteka longtable
+               booktabs=TRUE, # biblioteka booktabs
+               align=c('l', 'c', 'r', 'l', 'r'), # wyrównanie w kolumanch
+               digits=c(0,1,2,3,0)
+               ) 
+
+@
+
+
+\end{document}

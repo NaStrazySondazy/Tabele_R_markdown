@@ -1,0 +1,38 @@
+---
+title: "Dodawanie tytułu do tabeli generowanej z R przy użyciu funkcji kable z pliku markdown" 
+author: "Zbigniew Marczewski"
+date: "Wtorek, 9 czerwca 2015 r."
+output:  pdf_document
+header-includes:
+     - \usepackage{polski} 
+     - \usepackage[utf8]{inputenc} 
+     - \usepackage{longtable}
+     - \usepackage{booktabs}
+---
+
+# Dodawanie tytułu do tabeli na przykładzie dokumentu PDF
+
+Aby dodać tytuł do tabeli generowanej z dokumentu rmarkdown przy użyciu funkcji __kable__  należy:
+
+  1. dla argumentu _format_ wybrać format pliku docelowego
+    + "__latex__" - dokumenty PDF
+    + "__html__" - dokumnety html
+    + "__pandoc__" - dokumnety MsWord
+    + "__markdown__" - dokumnety markdown
+  2. dla argumentu _caption_ wybrać treść tytułu tabeli 
+
+Poniżej przykład tabeli wygenerowane dla dokumnetu w formacie PDF.
+
+```{r, results='asis'}
+knitr::kable( head(mtcars,100),
+                format="latex", # format tabeli
+                align = c( "l","r","l","r","l","r","l","r","l","r","l"),
+                digits=c(2,0,0,0,1,1,2,2,2,2,2),
+                caption = "Tytuł tabeli", # tytuł
+                longtable=TRUE,
+                booktabs=TRUE)
+```
+
+
+UWAGA!!! W przypadku dokumentów PDF tworzonych na podstawie pliku markdown pojawia się problem z "pływaniem" tabeli - tabela przesuwa się na koniec dokumentu po dodaniu tytułu. Prawdopodobnie istnieje już jakiś sposób radzenia sobie z tym problemem, ale mi chwilowo nie udało się go znaleźć. Tymczasowo można więc w przypadu kompilowania pliku PDF dodać tytuł ręcznie.
+
