@@ -42,16 +42,14 @@ Jak wiadomo _knitr_ daje możliwość tworzenia dokumentów w różnych formatac
 * dokument md (markdown) - "Tabele\_markdown.md"
 * domument MSWord - "Tabele\_markdown.docx"
 
-Taka sztuczka może być przydatna, gdy wysyłamy nasz dokument w różne miejsca.
-
-W "nagłówku" pliku "Tabele\_markdown.Rmd" znajduje się opis formatów w jakich możemy z niego generować dokumenty. Dokumenty generujemy albo używając przycisku "knitr" w RStudio (odpowiednio: "PDF", "Word" lub "HTML"), albo w __KONSOLI__ R wpisujemy komendę: _rmarkdown::render("Tabele\_rmarkdown.Rmd", "...")_. W miejsce trzech kropek wstawiamy po kolei odpowiednio (zachowując cudzysłów):
+W "nagłówku" pliku "Tabele\_markdown.Rmd" znajduje się opis formatów w jakich możemy z niego generować dokumenty. Robumy to używając przycisku "knitr" w RStudio (odpowiednio: "PDF", "Word" lub "HTML"), albo wpisując w __KONSOLI__ R komendę: _rmarkdown::render("Tabele\_rmarkdown.Rmd", "...")_. W miejsce trzech kropek wstawiamy po kolei odpowiednio (zachowując cudzysłów):
 
 * word_document
 * pdf_document
 * md_document
 * html_document
 
-W ten sposób możemy otrzymać 4 różne dokumenty z 4 różnymi formatowaniami tabel. Teoretycznie można też podać R komendę _rmarkdown::render("Tabele\_rmarkdown.Rmd", "all")_  i w ten sposób wygenerować wszystkie dokumenty jednoczśnie, ale niestety u mnie to nie działa. W przypadku generowania dokumentów przy pomocy poleceń w konsoli może pojawić się problem z kodowaniem. Jeżeli plik źródłowy .Rmd jest kodowany w UTF-8, a systemowe kodowanie to WINDOWS 1253 (tak jest w moim przypadku) to dokumentach generowanych przy pomocy polecenia z konsoli zamiast polskich znaków pojawią się krzaki.  
+W ten sposób możemy otrzymać 4 różne dokumenty z 4 różnymi formatowaniami tabel. Teoretycznie można też podać R komendę _rmarkdown::render("Tabele\_rmarkdown.Rmd", "all")_  i w ten sposób wygenerować wszystkie dokumenty jednoczśnie, ale niestety u mnie to nie działa. W przypadku generowania dokumentów przy pomocy poleceń w konsoli może pojawić się problem z kodowaniem. Jeżeli plik źródłowy .Rmd jest kodowany w UTF-8, a systemowe kodowanie to WINDOWS 1253 (tak jest w moim przypadku) to w dokumentach generowanych przy pomocy polecenia z konsoli zamiast polskich znaków pojawią się krzaki.  
 
 Oczywiście nie ma konieczności generowania wszystkich dokumentów na raz. Można sobie wybrac jeden. 
 
