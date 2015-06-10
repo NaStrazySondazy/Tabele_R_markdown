@@ -58,7 +58,7 @@
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
-\title{Generowanie tabele w LaTeX-u przy użyciu funkcji \emph{kable}}
+\title{Generowanie tabele w LaTeX-u (\emph{Sweave}) przy użyciu funkcji \emph{kable}}
 \date{9 czerwca 2015 r.}
 \author{ Zbyszek Marczewski}
 
@@ -105,7 +105,7 @@ Klasycznym rozwiązaniem stosowanym w celu wstawianienia tabeli z R do pliku PDF
 
 \begin{kframe}
 \begin{alltt}
-\hlstd{tabela.2.1}\hlkwb{<-}\hlstd{xtable::} \hlkwd{xtable}\hlstd{(}\hlkwd{head}\hlstd{(iris,} \hlnum{80}\hlstd{),}
+\hlstd{tabela.2.1}\hlkwb{<-}\hlstd{xtable}\hlopt{::} \hlkwd{xtable}\hlstd{(}\hlkwd{head}\hlstd{(iris,} \hlnum{80}\hlstd{),}
                             \hlkwc{caption}\hlstd{=}\hlstr{"Zastosowanie funkcji xtable "}\hlstd{)}
 \hlkwd{print}\hlstd{( tabela.2.1,} \hlcom{# tabela}
        \hlkwc{table.placement} \hlstd{=} \hlstr{"H"}\hlstd{,} \hlcom{# położenie tabeli - }
@@ -120,7 +120,7 @@ Klasycznym rozwiązaniem stosowanym w celu wstawianienia tabeli z R do pliku PDF
 \hlstd{)}
 \end{alltt}
 \end{kframe}% latex table generated in R 3.1.1 by xtable 1.7-4 package
-% Tue Jun 09 11:46:08 2015
+% Wed Jun 10 10:12:48 2015
 {\small
 \begin{longtable}{rrrrrl}
 \caption{Zastosowanie funkcji xtable } \\ 
@@ -223,7 +223,7 @@ Poniżej, przy użyciu funkcji \textbf{kable}, stworzono najprostrzą z możliwy
 
 \begin{kframe}
 \begin{alltt}
-\hlstd{knitr::} \hlkwd{kable}\hlstd{(} \hlkwd{head}\hlstd{(iris,} \hlnum{80}\hlstd{) ,} \hlkwc{format} \hlstd{=}\hlstr{"latex"}\hlstd{)}
+\hlstd{knitr}\hlopt{::} \hlkwd{kable}\hlstd{(} \hlkwd{head}\hlstd{(iris,} \hlnum{80}\hlstd{) ,} \hlkwc{format} \hlstd{=}\hlstr{"latex"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \begin{tabular}{r|r|r|r|l}
@@ -393,13 +393,14 @@ Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
 \end{tabular}
 
 
+
 \subsection{Lepsze ``kable'' z użyciem biblioteki \emph{longtable}}
 
 Aby uzyskać przy użyciu funkcji \textbf{kable} tabelę, która przejdzie na następne strony, wystarczy dodać jeden argument \textbf{longtable=TRUE} oraz uruchomić w LaTeX-u, na początku pliku \emph{.Rnw}, bibliotekę \textbf{longtable} (patrz 7 wiersz pliku Tabele\_LATEX.Rnw). Dzięku temu tabela zostanie przeniesiona na następne strony.
 
 \begin{kframe}
 \begin{alltt}
-\hlstd{knitr::} \hlkwd{kable}\hlstd{(} \hlkwd{head}\hlstd{(iris,} \hlnum{80}\hlstd{),} \hlkwc{longtable}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\hlstd{knitr}\hlopt{::} \hlkwd{kable}\hlstd{(} \hlkwd{head}\hlstd{(iris,} \hlnum{80}\hlstd{),} \hlkwc{longtable}\hlstd{=}\hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \begin{longtable}{r|r|r|r|l}
@@ -569,6 +570,7 @@ Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
 \end{longtable}
 
 
+
 \subsection{Najlesze ``kable'' z użyciem bibliotek \emph{longtable} i \emph{booktabs}}
 
 Ale to nie wszystko. Dodatkowo do funkcji \textbf{kable} można dołożyć bibliotekę \textbf{booktabs}, która nada tabeli ładniejszy wygląd. Poniżej zastosowanie funkcji \textbf{kable} z jej wszystkimi możliwościami, w tym z dodaniem tytyłu.
@@ -576,7 +578,7 @@ Ale to nie wszystko. Dodatkowo do funkcji \textbf{kable} można dołożyć bibli
 
 \begin{kframe}
 \begin{alltt}
-\hlstd{knitr::} \hlkwd{kable}\hlstd{(} \hlkwd{head}\hlstd{(iris,} \hlnum{80}\hlstd{) ,}
+\hlstd{knitr}\hlopt{::} \hlkwd{kable}\hlstd{(} \hlkwd{head}\hlstd{(iris,} \hlnum{80}\hlstd{) ,}
         \hlkwc{caption}\hlstd{=}\hlstr{"Tabela 4. Wykorzystanie wyszystkich możliwości funkcji kable + tytuł"}\hlstd{,}
         \hlkwc{row.names} \hlstd{= T,} \hlcom{# nazwy wierszy}
         \hlkwc{format}\hlstd{=}\hlstr{"latex"}\hlstd{,} \hlcom{# format LaTeX}
@@ -586,7 +588,8 @@ Ale to nie wszystko. Dodatkowo do funkcji \textbf{kable} można dołożyć bibli
         \hlkwc{digits}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{0}\hlstd{)} \hlcom{# zaokrąglenia liczb w kolumnach}
         \hlstd{)}
 \end{alltt}
-\end{kframe}
+\end{kframe}\begin{table}
+
 \caption{Tabela 4. Wykorzystanie wyszystkich możliwości funkcji kable + tytuł}
 \begin{longtable}{llcrlr}
 \toprule
@@ -689,6 +692,8 @@ Ale to nie wszystko. Dodatkowo do funkcji \textbf{kable} można dołożyć bibli
 80 & 6 & 2.6 & 3.5 & 1.0 & versicolor\\
 \bottomrule
 \end{longtable}
+\end{table}
+
 
 
 Pytanie, czy domyślny sposób umieszczania tytułu jest dla nas satysfakcjonujący. Jeżeli nie to możemy go dopisać ręcznie zwykły (w tym przypadku wyśrodkowany) tekst, tak jak poniżej.
@@ -715,6 +720,7 @@ Tabela 5. Wykorzystanie wyszystkich możliwości funkcji \textbf{kable} + tytuł
 10 & 5 & 3.1 & 1.5 & 0.1 & setosa\\
 \bottomrule
 \end{longtable}
+
 
 
 

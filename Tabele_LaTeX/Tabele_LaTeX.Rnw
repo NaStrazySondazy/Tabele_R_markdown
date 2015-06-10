@@ -9,7 +9,7 @@
 
 \begin{document}
 
-\title{Generowanie tabele w LaTeX-u przy użyciu funkcji \emph{kable}}
+\title{Generowanie tabele w LaTeX-u (\emph{Sweave}) przy użyciu funkcji \emph{kable}}
 \date{9 czerwca 2015 r.}
 \author{ Zbyszek Marczewski}
 

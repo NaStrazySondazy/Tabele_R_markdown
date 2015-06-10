@@ -91,7 +91,7 @@ img {
 <h1>Wstęp</h1>
 <div id="od-autora" class="section level2">
 <h2>Od autora</h2>
-<p>Znalezienie sposobu na umieszczenie tabel z wynikami z R w raporcie generowanym przy użyciu <em>knitr</em> zajęło mi bardzo dużu czasu i kosztowało mnie sporo nerwów. Dlatego, żeby nikt nie musiał powtarzać mojej drogi przez męki, publikuję niniejszy krótki przewodnik po tabelach generowanych w rmarkdown.</p>
+<p>Znalezienie sposobu na umieszczenie tabel z wynikami z R w raporcie generowanym przy użyciu <em>knitr</em> zajęło mi bardzo dużo czasu i kosztowało mnie sporo nerwów. Nikomu nie życzę tej drogi przez mękę. Dlatego też zamieszcza poniżej moje spostrzeżenia dotyczące generowania tabel w rmarkdown. Mam nadzieję, że dzięki temu unikniecie przynajmniej niektórych moich błędów.</p>
 </div>
 <div id="tylko-knitr" class="section level2">
 <h2>Tylko “knitr”</h2>
@@ -99,12 +99,12 @@ img {
 </div>
 <div id="tabele-kable" class="section level2">
 <h2>Tabele “kable”&quot;</h2>
-<p>W dalszej części tego dokumentu znajdują się tabele wygenerowane przy użyciu funkcji <strong>kable</strong> z pakietu <em>knitr</em>. To rozwiązanie nie jest, o ile wiem, bardzo popularne. Przez lata wszyscy uczyli się korzystania z funkcji <strong>xtable</strong> i do dzisiaj istnieje mnóstwo opisów, jak jej używać. Na <strong>kable</strong> natknąłem się więc kiedyś przypadkiem, w trakcie jednej z moich licznych walk z tabelami. Od razu przypadła mi do gustu prostota tej funkcji, która oczywiście wiąrze się z pewnymi ograniczeniami.</p>
-<p>Funkcja <strong>kable</strong> działa trochę inaczej niż jej “pierwowzów” <strong>table</strong>. Nie generuje tabel z danych lecz “drukuje” gotowe dane do tabeli markdown. Co ważne <strong>kable</strong> wyświetla jedynie obiekty klasy “<em>data.frame</em>” lub “<em>matrix</em>”. To oznacza, że aby przedstawić wynik naszych obliczeń w tabeli, musimy go sprowadzić do jednej z tych dwóch klas.</p>
+<p>W dalszej części tego dokumentu znajdują się tabele wygenerowane przy użyciu funkcji <strong>kable</strong> z pakietu <em>knitr</em>. To rozwiązanie nie jest, o ile wiem, bardzo popularne. Przez lata wszyscy uczyli się korzystania z funkcji <strong>xtable</strong> i w związku w sieci bardzo łatwo można znaleźć opis jej działania wraz z przykładami. Na <strong>kable</strong> natknąłem się więc kiedyś przypadkiem, w trakcie jednej z moich licznych walk z tabelami. Od razu przypadła mi do gustu prostota tej funkcji, która oczywiście przekłada się też na pewne ograniczenia.</p>
+<p>Funkcja <strong>kable</strong> działa trochę inaczej niż jej “pierwowzór” <strong>table</strong>. Nie generuje tabel z danych lecz “drukuje” gotowe dane do tabeli markdown. Co ważne <strong>kable</strong> wyświetla jedynie obiekty klasy “<em>data.frame</em>” lub “<em>matrix</em>”. To oznacza, że aby przedstawić wynik naszych obliczeń w tabeli, musimy go sprowadzić do jednej z tych dwóch klas.</p>
 </div>
 <div id="pdf-html-msword-i-dalej" class="section level2">
 <h2>PDF, HTML, MsWord i dalej</h2>
-<p>Jak wiadomo <em>knitr</em> daje możliwość tworzenia dokumentów w różnychformatach. Funkcja <strong>kable</strong> bez problemy umie się do tego dostosować. Aby to zademonstwować <strong>ten dokument</strong> został wygenerowany w czterech wersjach na podstawie jednego pliku “Tabele_markdown.Rmd”:</p>
+<p>Jak wiadomo <em>knitr</em> daje możliwość tworzenia dokumentów w różnych formatach. Funkcja <strong>kable</strong> bez problemy umie się do tego dostosować. Aby to zademonstrować <strong>ten dokument</strong> został wygenerowany w czterech wersjach na podstawie jednego pliku “Tabele_markdown.Rmd”:</p>
 <ul>
 <li>dokument html - “Tabele_markdown.html”</li>
 <li>dokument PDF - “Tabele_markdown.pdf”</li>
@@ -112,7 +112,7 @@ img {
 <li>domument MSWord - “Tabele_markdown.docx”</li>
 </ul>
 <p>Taka sztuczka może być przydatna, gdy wysyłamy nasz dokument w różne miejsca.</p>
-<p>W “nagłówku” pliku “Tabele_markdown.Rmd” znajduje się opis formatów w jakich możemy z niego generować dokumenty. Aby to zrobić używamy przycisku “knitr” w RStudio (odpowiednio: “PDF”, “Word” lub “HTML”), albo w <strong>KONSOLI</strong> R wpisujemy komendę: <em>rmarkdown::render(“Tabele_rmarkdown.Rmd”, “…”)</em>. W miejsce trzech kropek wstawiamy po kolei odpowiednio (zachowując cudzysłów):</p>
+<p>W “nagłówku” pliku “Tabele_markdown.Rmd” znajduje się opis formatów w jakich możemy z niego generować dokumenty. Dokumenty generujemy albo używając przycisku “knitr” w RStudio (odpowiednio: “PDF”, “Word” lub “HTML”), albo w <strong>KONSOLI</strong> R wpisujemy komendę: <em>rmarkdown::render(“Tabele_rmarkdown.Rmd”, “…”)</em>. W miejsce trzech kropek wstawiamy po kolei odpowiednio (zachowując cudzysłów):</p>
 <ul>
 <li>word_document</li>
 <li>pdf_document</li>
@@ -120,7 +120,7 @@ img {
 <li>html_document</li>
 </ul>
 <p>W ten sposób możemy otrzymać 4 różne dokumenty z 4 różnymi formatowaniami tabel. Teoretycznie można też podać R komendę <em>rmarkdown::render(“Tabele_rmarkdown.Rmd”, “all”)</em> i w ten sposób wygenerować wszystkie dokumenty jednoczśnie, ale niestety u mnie to nie działa. W przypadku generowania dokumentów przy pomocy poleceń w konsoli może pojawić się problem z kodowaniem. Jeżeli plik źródłowy .Rmd jest kodowany w UTF-8, a systemowe kodowanie to WINDOWS 1253 (tak jest w moim przypadku) to dokumentach generowanych przy pomocy polecenia z konsoli zamiast polskich znaków pojawią się krzaki.</p>
-<p>Oczywiście nie ma konieczności generowania wszystkich dokumentów na raz. Zawsze można sobie wybrac jeden.</p>
+<p>Oczywiście nie ma konieczności generowania wszystkich dokumentów na raz. Można sobie wybrac jeden.</p>
 </div>
 </div>
 <div id="opis-argumentow-funkcji-kable" class="section level1">
@@ -1692,7 +1692,7 @@ img {
 <div id="uwagi-koncowe" class="section level1">
 <h1>Uwagi końcowe</h1>
 <p>W powyższych przykładach nie dodano tutułów do tabel. Jest to sposodowane zastosowaniem w funkcji <strong>kable</strong> dla argumentu <em>format</em> wartości <em>markdown</em>, który nie daje takiej możliwości. Żeby zobaczyć, jak działa dodawania tytułu na przykładzie dokumentu PDF lub HTML przejdź do przykładów: <a href="Tabele_rmarkdown_tytuly/Tabele_rmarkdown_tytuly_PDF.pdf">Tabela_rmarkdown_tytuly/Tabela_rmarkdown_tytuly_PDF.pdf</a> lub <a href="Tabele_rmarkdown_tytuly/Tabele_rmarkdown_tytuly_HTML.html">Tabela_rmarkdown_tytuly/Tabela_rmarkdown_tytuly_HTML.html</a></p>
-<p>Aby zobaczyć, jak tworzyć tabele w dokumnetach PDF generowanych bezpośrednio z LaTeX bez udziału rmarkdown (narzędzie <strong>Sweave</strong>) przejdź do pliku <a href="Tabele_LaTeX\Tabele_LaTeX.pdf">Tabela_LaTeX/Tabela_LaTeX.pdf</a></p>
+<p>Aby zobaczyć, jak tworzyć tabele w dokumnetach PDF generowanych bezpośrednio z LaTeX, bez udziału rmarkdown czyli przy użyciu narzędzie <strong>Sweave</strong>, przejdź do pliku <a href="Tabele_LaTeX\Tabele_LaTeX.pdf">Tabela_LaTeX/Tabela_LaTeX.pdf</a></p>
 </div>
 
 

@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.3.13)  9 JUN 2015 11:46
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.3.13)  10 JUN 2015 10:12
 entering extended mode
 **Tabele_LaTeX.tex
-(G:\Dokumenty\WAS\MINI\Tabele_R_markdown\Tabele_LaTeX\Tabele_LaTeX.tex
+(G:\Dokumenty\WAS\NSS\Tabele_R_markdown\Tabele_LaTeX\Tabele_LaTeX.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -572,7 +572,7 @@ Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 338.
 Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 339.
 Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 340.
 ))
-(G:\Dokumenty\WAS\MINI\Tabele_R_markdown\Tabele_LaTeX\Tabele_LaTeX.aux)
+(G:\Dokumenty\WAS\NSS\Tabele_R_markdown\Tabele_LaTeX\Tabele_LaTeX.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
 LaTeX Font Info:    ... okay on input line 59.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 59.
@@ -666,7 +666,7 @@ LaTeX Font Info:    External font `plex10' loaded for size
 LaTeX Font Info:    External font `plex10' loaded for size
 (Font)              <6> on input line 65.
 
-(G:\Dokumenty\WAS\MINI\Tabele_R_markdown\Tabele_LaTeX\Tabele_LaTeX.toc
+(G:\Dokumenty\WAS\NSS\Tabele_R_markdown\Tabele_LaTeX\Tabele_LaTeX.toc
 LaTeX Font Info:    External font `plex10' loaded for size
 (Font)              <10> on input line 4.
 LaTeX Font Info:    External font `plex10' loaded for size
@@ -710,66 +710,56 @@ Overfull \vbox (590.89436pt too high) has occurred while \output is active []
 
 
 [5]
-Underfull \vbox (badness 10000) detected at line 446
+Underfull \vbox (badness 10000) detected at line 447
  []
 
 [6] [7]
-Overfull \hbox (3.77812pt too wide) in paragraph at lines 580--580
+Overfull \hbox (3.77812pt too wide) in paragraph at lines 582--582
 []        []\OT4/cmtt/m/n/10 caption[][]=[][]"Tabela 4. Wykorzystanie wyszystki
 ch mo»liwo±ci funkcji kable + tytuª"[][],[][] 
  []
 
 
-! LaTeX Error: \caption outside float.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.590 \caption
-              {Tabela 4. Wykorzystanie wyszystkich moÅ¼liwoÅ›ci funkcji kabl...
-
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Underfull \vbox (badness 10000) detected at line 617
+Underfull \vbox (badness 10000) detected at line 620
  []
 
-[8] [9]
-Underfull \vbox (badness 10000) detected at line 717
+
+LaTeX Warning: Float too large for page by 692.06976pt on input line 695.
+
+
+Underfull \vbox (badness 10000) detected at line 722
  []
 
-[10] (G:\Dokumenty\WAS\MINI\Tabele_R_markdown\Tabele_LaTeX\Tabele_LaTeX.aux) ) 
+[8] [9] (G:\Dokumenty\WAS\NSS\Tabele_R_markdown\Tabele_LaTeX\Tabele_LaTeX.aux) 
+) 
 Here is how much of TeX's memory you used:
  2938 strings out of 493921
- 40142 string characters out of 3147261
- 124262 words of memory out of 3000000
+ 40133 string characters out of 3147261
+ 125262 words of memory out of 3000000
  6158 multiletter control sequences out of 15000+200000
  16625 words of font info for 46 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  27i,6n,32p,569b,257s stack positions out of 5000i,500n,10000p,200000b,50000s
-{
-C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/pl/plit.enc}{C:/Program Files/MiKTe
-X 2.9/fonts/enc/dvips/pl/plrm.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/
-cm-super/cm-super-ts1.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/pl/plitt
-.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/pl/plms.enc}{C:/Program Files
-/MiKTeX 2.9/fonts/enc/dvips/pl/pltt.enc}<C:/Program Files/MiKTeX 2.9/fonts/type
-1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public
-/pl/plbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plbx12.pfb><C
-:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plbxti10.pfb><C:/Program Files
-/MiKTeX 2.9/fonts/type1/public/pl/plitt10.pfb><C:/Program Files/MiKTeX 2.9/font
-s/type1/public/pl/plr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/
-plr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plr17.pfb><C:/Prog
-ram Files/MiKTeX 2.9/fonts/type1/public/pl/plr9.pfb><C:/Program Files/MiKTeX 2.
-9/fonts/type1/public/pl/plsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pub
-lic/pl/plti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plti12.pfb
-><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/pltt10.pfb><C:/Program File
-s/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1000.pfb><C:/Program Files/MiKTeX 
-2.9/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on Tabele_LaTeX.pdf (10 pages, 169050 bytes).
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/pl/plit.enc}{C:/Program Files/MiK
+TeX 2.9/fonts/enc/dvips/pl/plrm.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvip
+s/cm-super/cm-super-ts1.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/pl/pli
+tt.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/pl/plms.enc}{C:/Program Fil
+es/MiKTeX 2.9/fonts/enc/dvips/pl/pltt.enc}<C:/Program Files/MiKTeX 2.9/fonts/ty
+pe1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publ
+ic/pl/plbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plbx12.pfb>
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plbxti10.pfb><C:/Program Fil
+es/MiKTeX 2.9/fonts/type1/public/pl/plitt10.pfb><C:/Program Files/MiKTeX 2.9/fo
+nts/type1/public/pl/plr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/p
+l/plr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plr17.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/pl/plr9.pfb><C:/Program Files/MiKTeX 
+2.9/fonts/type1/public/pl/plsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
+ublic/pl/plti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plti12.p
+fb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/pltt10.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1000.pfb><C:/Program Files/MiKTe
+X 2.9/fonts/type1/public/cm-super/sftt1000.pfb>
+Output written on Tabele_LaTeX.pdf (9 pages, 169637 bytes).
 PDF statistics:
- 101 PDF objects out of 1000 (max. 8388607)
+ 98 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

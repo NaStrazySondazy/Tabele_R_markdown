@@ -6,7 +6,7 @@ Wtorek, 9 czerwca 2015 r.
 
 ## Od autora
 
-Znalezienie sposobu na umieszczenie tabel z wynikami z R w raporcie generowanym przy użyciu _knitr_ zajęło mi bardzo dużu czasu i kosztowało mnie sporo nerwów. Dlatego, żeby nikt nie musiał powtarzać mojej drogi przez męki, publikuję niniejszy krótki przewodnik po tabelach generowanych w rmarkdown. 
+Znalezienie sposobu na umieszczenie tabel z wynikami z R w raporcie generowanym przy użyciu _knitr_ zajęło mi bardzo dużo czasu i kosztowało mnie sporo nerwów. Nikomu nie życzę tej drogi przez mękę. Dlatego też zamieszcza poniżej moje spostrzeżenia dotyczące generowania tabel w rmarkdown. Mam nadzieję, że dzięki temu unikniecie przynajmniej niektórych moich błędów.
 
 ## Tylko "knitr"
 
@@ -14,13 +14,13 @@ Klasyczny, tradycyjny sposób wstawiania tabel do dokumentów generowanych przez
 
 ## Tabele "kable""
 
-W dalszej części tego dokumentu znajdują się tabele wygenerowane przy użyciu funkcji __kable__ z pakietu _knitr_. To rozwiązanie nie jest, o ile wiem, bardzo popularne. Przez lata wszyscy uczyli się korzystania z funkcji __xtable__ i do dzisiaj istnieje mnóstwo opisów, jak jej używać. Na __kable__ natknąłem się więc kiedyś przypadkiem, w trakcie jednej z moich licznych walk z tabelami. Od razu przypadła mi do gustu prostota tej funkcji, która oczywiście wiąrze się z pewnymi ograniczeniami. 
+W dalszej części tego dokumentu znajdują się tabele wygenerowane przy użyciu funkcji __kable__ z pakietu _knitr_. To rozwiązanie nie jest, o ile wiem, bardzo popularne. Przez lata wszyscy uczyli się korzystania z funkcji __xtable__ i w związku w sieci bardzo łatwo można znaleźć opis jej działania wraz z przykładami. Na __kable__ natknąłem się więc kiedyś przypadkiem, w trakcie jednej z moich licznych walk z tabelami. Od razu przypadła mi do gustu prostota tej funkcji, która oczywiście przekłada się też na pewne ograniczenia. 
 
-Funkcja __kable__ działa trochę inaczej niż jej "pierwowzów" __table__. Nie generuje tabel z danych lecz "drukuje" gotowe dane do tabeli markdown. Co ważne __kable__ wyświetla jedynie obiekty klasy "_data.frame_" lub "_matrix_". To oznacza, że aby przedstawić wynik naszych obliczeń w tabeli, musimy go sprowadzić do jednej z tych dwóch klas. 
+Funkcja __kable__ działa trochę inaczej niż jej "pierwowzór" __table__. Nie generuje tabel z danych lecz "drukuje" gotowe dane do tabeli markdown. Co ważne __kable__ wyświetla jedynie obiekty klasy "_data.frame_" lub "_matrix_". To oznacza, że aby przedstawić wynik naszych obliczeń w tabeli, musimy go sprowadzić do jednej z tych dwóch klas. 
 
 ## PDF, HTML, MsWord i dalej
 
-Jak wiadomo _knitr_ daje możliwość tworzenia dokumentów w różnychformatach. Funkcja __kable__ bez problemy umie się do tego dostosować. Aby to zademonstwować __ten dokument__ został wygenerowany w czterech wersjach na podstawie jednego pliku "Tabele\_markdown.Rmd":
+Jak wiadomo _knitr_ daje możliwość tworzenia dokumentów w różnych formatach. Funkcja __kable__ bez problemy umie się do tego dostosować. Aby to zademonstrować __ten dokument__ został wygenerowany w czterech wersjach na podstawie jednego pliku "Tabele\_markdown.Rmd":
 
 * dokument html - "Tabele\_markdown.html"
 * dokument PDF - "Tabele\_markdown.pdf"
@@ -29,7 +29,7 @@ Jak wiadomo _knitr_ daje możliwość tworzenia dokumentów w różnychformatach
 
 Taka sztuczka może być przydatna, gdy wysyłamy nasz dokument w różne miejsca.
 
-W "nagłówku" pliku "Tabele\_markdown.Rmd" znajduje się opis formatów w jakich możemy z niego generować dokumenty. Aby to zrobić używamy przycisku "knitr" w RStudio (odpowiednio: "PDF", "Word" lub "HTML"), albo w __KONSOLI__ R wpisujemy komendę: _rmarkdown::render("Tabele\_rmarkdown.Rmd", "...")_. W miejsce trzech kropek wstawiamy po kolei odpowiednio (zachowując cudzysłów):
+W "nagłówku" pliku "Tabele\_markdown.Rmd" znajduje się opis formatów w jakich możemy z niego generować dokumenty. Dokumenty generujemy albo używając przycisku "knitr" w RStudio (odpowiednio: "PDF", "Word" lub "HTML"), albo w __KONSOLI__ R wpisujemy komendę: _rmarkdown::render("Tabele\_rmarkdown.Rmd", "...")_. W miejsce trzech kropek wstawiamy po kolei odpowiednio (zachowując cudzysłów):
 
 * word_document
 * pdf_document
@@ -38,7 +38,7 @@ W "nagłówku" pliku "Tabele\_markdown.Rmd" znajduje się opis formatów w jakic
 
 W ten sposób możemy otrzymać 4 różne dokumenty z 4 różnymi formatowaniami tabel. Teoretycznie można też podać R komendę _rmarkdown::render("Tabele\_rmarkdown.Rmd", "all")_  i w ten sposób wygenerować wszystkie dokumenty jednoczśnie, ale niestety u mnie to nie działa. W przypadku generowania dokumentów przy pomocy poleceń w konsoli może pojawić się problem z kodowaniem. Jeżeli plik źródłowy .Rmd jest kodowany w UTF-8, a systemowe kodowanie to WINDOWS 1253 (tak jest w moim przypadku) to dokumentach generowanych przy pomocy polecenia z konsoli zamiast polskich znaków pojawią się krzaki.  
 
-Oczywiście nie ma konieczności generowania wszystkich dokumentów na raz. Zawsze można sobie wybrac jeden. 
+Oczywiście nie ma konieczności generowania wszystkich dokumentów na raz. Można sobie wybrac jeden. 
 
 # Opis argumentów funkcji __kable__
 
@@ -274,4 +274,4 @@ knitr:: kable( head(mtcars,20), format ="markdown",
 W powyższych przykładach nie dodano tutułów do tabel. Jest to sposodowane zastosowaniem w funkcji __kable__ dla argumentu _format_ wartości _markdown_, który nie daje takiej możliwości. Żeby zobaczyć, jak działa dodawania tytułu na przykładzie dokumentu PDF lub HTML przejdź do przykładów: [Tabela_rmarkdown_tytuly/Tabela_rmarkdown_tytuly_PDF.pdf](Tabele_rmarkdown_tytuly/Tabele_rmarkdown_tytuly_PDF.pdf) lub [Tabela_rmarkdown_tytuly/Tabela_rmarkdown_tytuly_HTML.html](Tabele_rmarkdown_tytuly/Tabele_rmarkdown_tytuly_HTML.html)
 
 
-Aby zobaczyć, jak tworzyć tabele w dokumnetach PDF generowanych bezpośrednio z LaTeX bez udziału rmarkdown (narzędzie __Sweave__) przejdź do pliku  [Tabela_LaTeX/Tabela_LaTeX.pdf](Tabele_LaTeX\Tabele_LaTeX.pdf)
+Aby zobaczyć, jak tworzyć tabele w dokumnetach PDF generowanych bezpośrednio z LaTeX, bez udziału rmarkdown czyli przy użyciu narzędzie __Sweave__, przejdź do pliku  [Tabela_LaTeX/Tabela_LaTeX.pdf](Tabele_LaTeX\Tabele_LaTeX.pdf)
